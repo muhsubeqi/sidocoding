@@ -1,0 +1,8 @@
+/* your styles go here */
+.navbar-brand img {
+    width: 250px;
+}
+.ebook {
+    height: 250px;
+    object-fit: cover;
+}

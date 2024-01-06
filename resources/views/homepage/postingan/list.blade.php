@@ -1,0 +1,129 @@
+@extends('homepage.layouts.template')
+@section('title')
+    Sidocoding | Daftar Postingan
+@endsection
+@section('content')
+    <div id="heading-breadcrumbs" class="border-top-0 border-bottom-0">
+        <div class="container">
+            <div class="row d-flex align-items-center flex-wrap">
+                <div class="col-md-7">
+                    <h1 class="h2">{{ $category->name }}</h1>
+                </div>
+                <div class="col-md-5">
+                    <ul class="breadcrumb d-flex justify-content-end">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active">{{ $category->name }} </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="content">
+        <div class="container">
+            <div class="row bar">
+                <!-- LEFT COLUMN _________________________________________________________-->
+                <div id="blog-listing-small" class="col-lg-9">
+                    <div class="row">
+                        @forelse ($post as $lp)
+                            <div class="col-lg-4 col-md-6">
+                                <div class="home-blog-post">
+                                    <div class="image">
+                                        <img src="{{ asset('/data/post/image/' . $lp->image) }}"
+                                            style="width: 500px; height: 200px; object-fit:cover;" alt="..."
+                                            class="img-fluid" />
+                                        <div class="overlay d-flex align-items-center justify-content-center">
+                                            <a href="{{ route('postingan.detail', ['id' => $lp->id, 'slug' => $lp->slug]) }}"
+                                                class="btn btn-template-outlined-white"><i class="fa fa-chain"> </i> Read
+                                                More</a>
+                                        </div>
+                                    </div>
+                                    <div class="text">
+                                        <h4><a
+                                                href="{{ route('postingan.detail', ['id' => $lp->id, 'slug' => $lp->slug]) }}">{{ Str::limit($lp->title, 30) }}</a>
+                                        </h4>
+                                        <p class="author-category">
+                                            By <a href="#">{{ $lp->user->name }}</a> in
+                                            <a
+                                                href="{{ route('tutorial.list', ['id' => $lp->category->id]) }}">{{ $lp->category->name }}</a>
+                                        </p>
+                                        <a href="{{ route('postingan.detail', ['id' => $lp->id, 'slug' => $lp->slug]) }}"
+                                            class="btn btn-template-outlined">Continue
+                                            Reading</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-lg-6 col-md-6">Tidak ada data postingan untuk kategori ini</div>
+                        @endforelse
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $post->links() }}
+                    </div>
+                </div>
+                <!--  RIGHT COLUMN _________________________________________________________-->
+                <div class="col-lg-3">
+                    <div class="panel panel-default sidebar-menu">
+                        <div class="panel-heading">
+                            <h3 class="h4 panel-title">{{ $category->name }}</h3>
+                        </div>
+                        <div class="panel-body text-widget">
+                            <p>
+                                {{ $category->description }}
+                            </p>
+                        </div>
+                    </div>
+                    {{-- <div class="panel panel-default sidebar-menu">
+                        <div class="panel-heading">
+                            <h3 class="h4 panel-title">Search</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="search">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search" class="form-control" /><span
+                                        class="input-group-btn">
+                                        <button type="submit" class="btn btn-template-main">
+                                            <i class="fa fa-search"></i></button></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div> --}}
+                    <div class="panel panel-default sidebar-menu">
+                        <div class="panel-heading">
+                            <h3 class="h4 panel-title">Tutorial {{ $category->name }}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills flex-column text-sm">
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($listPost as $lp)
+                                    <li class="nav-item">
+                                        <a href="{{ route('postingan.detail', ['id' => $lp->id, 'slug' => $lp->slug]) }}"
+                                            class="nav-link">{{ $i++ }}. {{ $lp->title }}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="panel panel-default sidebar-menu">
+                            <div class="panel-heading">
+                                <h3 class="h4 panel-title">Categories</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="nav nav-pills flex-column text-sm">
+                                    @foreach ($categoryList as $cl)
+                                        @if (isset($cl))
+                                            <li class="nav-item">
+                                                <a href="{{ route('tutorial.list', ['id' => $cl->id]) }}"
+                                                    class="nav-link">{{ $cl->name }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
